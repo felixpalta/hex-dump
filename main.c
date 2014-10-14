@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define NUMBER_IN_LINE 16
+static const char NUMBER_IN_LINE = 16;
 
 int main(int argc, char** argv)
 {
