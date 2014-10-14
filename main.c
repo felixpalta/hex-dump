@@ -1,20 +1,22 @@
 #include <stdio.h>
+#include <ctype.h>
 
-static const char NUMBER_IN_LINE = 16;
+static const int LINE_LENGTH = 16;
 
 int main(int argc, char** argv)
 {
     FILE* inputfile;
     int c,i;
-    char linebuf[NUMBER_IN_LINE+1];
+    char linebuf[LINE_LENGTH+1];
     if (argc != 2)
     {
-        fprintf(stderr, "Usage: %s file name\n", argv[0]);
+        fprintf(stderr, "Usage: %s filename\n", argv[0]);
         return 1;
     }
 
     inputfile = fopen(argv[1],"r");
-    if (!inputfile) {
+    if (!inputfile)
+    {
         fprintf(stderr, "File %s not found\n",argv[1]);
         return 1;
     }
@@ -22,14 +24,24 @@ int main(int argc, char** argv)
         int j;
         i = 0;
 
-        while ((c = fgetc(inputfile)) != EOF && i < NUMBER_IN_LINE){
+        while ( i < LINE_LENGTH)
+        {
+            if ((c = fgetc(inputfile)) == EOF) break;
+            if (!isprint(c))
+            {
+                linebuf[i] = ' ';
+            }
+            else
+            {
             linebuf[i] = c;
+            }
             printf("%02x ",c);
             ++i;
         }
         if (i == 0) break;
         linebuf[i] = '\0';
-        for (j = 0; j < NUMBER_IN_LINE - i; ++ j){
+        for (j = 0; j < LINE_LENGTH - i; ++ j)
+        {
             printf("   ");
         }
         printf("| %s\n",linebuf);
